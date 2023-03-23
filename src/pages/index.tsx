@@ -60,13 +60,8 @@ export default function Home() {
           </div>
         </div>
 
-        <Link href="/game">Game</Link>
+        <Link href="/game">Game (testing change)</Link>
       </main>
     </>
   )
 }
-
-
-
-// 1. Get a random list of pics and their corresponding titles upon creating lobby
-// 2. Use getServerSideProps, JSON-server, SWR
