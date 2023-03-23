@@ -65,3 +65,8 @@ export default function Home() {
     </>
   )
 }
+
+
+
+// 1. Get a random list of pics and their corresponding titles upon creating lobby
+// 2. Use getServerSideProps, JSON-server, SWR
