@@ -1,5 +1,5 @@
 
-function Home({data}){
+function Home({data} : {data:any}){
     return(
         <div>
             <h1>{data.title}</h1>
