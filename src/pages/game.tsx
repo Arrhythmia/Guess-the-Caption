@@ -1,11 +1,64 @@
 
+import { useEffect, useState } from 'react'
+import { io } from 'socket.io-client'
+const socket = io('guesscaptionserver.fly.dev:8080')
+
+
+
+
 function Home({data} : {data:any}){
+
+    useEffect(() => {
+        socket.on('send-chat', ({message}) => {
+            printMessage(message)
+        })
+
+
+
+
+        return () => {
+            socket.off('send-chat')
+        }
+    }, [])
+
+
     return(
         <div>
-            <h1>{data.title}</h1>
-            <img src={data.url}></img>
+            {/* <h1>{data.title}</h1>
+            <img src={data.url}></img> */}
+                <input type="text" id="msg"></input>
+                <div id="chatlog"></div>
         </div>
     )
+}
+
+function printMessage(msg:string | null | undefined){
+    const newMsg = document.createElement("div")
+    if (msg){
+        newMsg.textContent = msg
+    }
+    const parent = typeof document !== 'undefined' && document.getElementById("chatlog")
+    if (parent){
+        parent.appendChild(newMsg)
+    }
+}
+
+
+
+var msgBox = typeof document !== 'undefined' && document.getElementById("msg")
+if (msgBox){
+    msgBox.addEventListener("keypress", function(event:any){
+        if (event.key === "Enter" && msgBox){
+            var value = (msgBox as HTMLInputElement).value
+            sendChat(value);
+            (msgBox as HTMLInputElement).value = ''
+        }
+    })
+}
+
+function sendChat(message:string | null | undefined){
+    printMessage(message)
+    socket.emit('send-chat', ({message}))
 }
 
 export async function getServerSideProps() {
@@ -23,7 +76,6 @@ export async function getServerSideProps() {
         });
   
         const data = { title, url }
-        console.log(data)
     // Pass data to the page via props
     return { props: { data } }
   }
