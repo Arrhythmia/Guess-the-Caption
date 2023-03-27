@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react'
 import { io } from 'socket.io-client'
-const socket = io('guesscaptionserver.fly.dev:8080')
+const socket = io('https://guess-the-caption-server.glitch.me')
 
 
 
