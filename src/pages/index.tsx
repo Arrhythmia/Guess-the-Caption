@@ -61,6 +61,12 @@ export default function Home() {
         },
       ]);
     });
+
+
+    
+
+
+
     return () => {
       socket.off('lobbyCreated')
       socket.off('invalidLobby')
@@ -71,6 +77,9 @@ export default function Home() {
       socket.disconnect();
     };
   }, []);
+
+
+
   return (
     <div>
       {isInLobby ? (
@@ -89,7 +98,7 @@ export default function Home() {
               </li>
             ))}
           </ul>
-          <input value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+          <input value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { handleSendMessage() }}} />
           <button onClick={handleSendMessage}>Send</button>
         </>
       ) : (
@@ -103,6 +112,7 @@ export default function Home() {
               id="tempLobbyCode"
               value={lobbyCode}
               onChange={(e) => setLobbyCode(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') { handleJoinLobby() }}}
             />
             <button onClick={handleJoinLobby}>Join Lobby</button>
           </div>
