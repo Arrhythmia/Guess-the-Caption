@@ -6,31 +6,18 @@ const Game = dynamic(() => import('./game'));
 
 
 const MainPage = dynamic(() => import('./mainpage'))
+const Chat = dynamic(() => import('./chat'))
 
-const socket = io('localhost:4000');
+const socket = io(process.env.NODE_ENV === 'production' ? 'guess-the-caption-server.glitch.me' : 'localhost:4000');
 
 export default function Home() {
   const [lobbyCode, setLobbyCode] = useState<string>('');
   const [isInLobby, setIsInLobby] = useState<boolean>();
-  const [messages, setMessages] = useState<{ sender: string; message: string }[]>([]);
-  const [inputValue, setInputValue] = useState<string>('');
 
-  const handleCreateLobby = () => {
-    socket.emit('createLobby');
-  };
+  
 
-  const handleJoinLobby = () => {
-    socket.emit('joinLobby', lobbyCode);
-  };
-
-
-  const handleSendMessage = () => {
-    socket.emit('sendMessage', { sender: socket.id, message: inputValue, lobbyCode });
-    setInputValue('');
-  };
-
+  socket.connect();
   useEffect(() => {
-    socket.connect();
 
     socket.on('lobbyCreated', (code: string) => {
       setIsInLobby(true);
@@ -44,44 +31,10 @@ export default function Home() {
       alert('Invalid lobby code');
     });
 
-    socket.on('newUser', (userId: string) => {
-      console.log("SOMEONE JOINED!")
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          sender: 'system',
-          message: `${userId} has joined the lobby`,
-        },
-      ]);
-    });
-
-    socket.on('newMessage', (data: { sender: string; message: string }) => {
-      setMessages((prevMessages) => [...prevMessages, data]);
-    });
-
-    socket.on('userLeft', (userId: string) => {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          sender: 'system',
-          message: `${userId} has left the lobby`,
-        },
-      ]);
-    });
-
-
-    
-
-
-
     return () => {
       socket.off('lobbyCreated')
+      socket.off('joinedLobby')
       socket.off('invalidLobby')
-      socket.off('newUser')
-      socket.off('newMessage')
-      socket.off('userLeft')
-      
-      socket.disconnect();
     };
   }, []);
 
@@ -91,31 +44,15 @@ export default function Home() {
     <div>
       {isInLobby ? (
         <>
-          <Game></Game>
           <h1>Lobby {lobbyCode}</h1>
-          <ul>
-            {messages.map((data, i) => (
-              <li key={i}>
-                {data.sender === 'system' ? (
-                  <i>{data.message}</i>
-                ) : (
-                  <>
-                    {data.sender}: {data.message}
-                  </>
-                )}
-              </li>
-            ))}
-          </ul>
-          <input 
-          value={inputValue} 
-          onChange={(e) => setInputValue(e.target.value)} 
-          onKeyDown={(e) => { if (e.key === 'Enter') { handleSendMessage() }}} 
-          />
-          <button onClick={handleSendMessage}>Send</button>
+
+          <Chat socket={socket} lobbyCode={lobbyCode}></Chat>
+
+          <Game socket={socket} lobbyCode={lobbyCode}></Game>
         </>
       ) : (
-        <MainPage handleCreateLobby={handleCreateLobby}
-        handleJoinLobby={handleJoinLobby}
+        <MainPage socket={socket}
+        lobbyCode={lobbyCode}
         setLobbyCode={setLobbyCode}></MainPage>
       )}
     </div>

@@ -1,20 +1,20 @@
+type GameProps = {
+    socket: any;
+    lobbyCode: string;
+}
+
 
 import { useEffect, useState } from 'react'
-import { io } from 'socket.io-client'
-const socket = io('localhost:4000')
 
-
-
-
-export default function Home(){
+export default function Home({ socket, lobbyCode }: GameProps){
     const [imageData, setImageData] = useState<{ title: string; url: string }>();
 
     function handleRequestImage(){
-        socket.emit('requestImage');
+        socket.emit('requestImage', lobbyCode);
     }
 
     useEffect(() => {
-        socket.on('newImage', (data) => {
+        socket.on('newImage', (data: { title: string; url: string }) => {
             setImageData(data);
         })
     })
@@ -28,7 +28,6 @@ export default function Home(){
             <h1>{imageData.title}</h1>
             <img src={imageData.url}></img>
             </>):(<></>)}
-                <input type="text" id="msg"></input>
         </div>
     )
 }

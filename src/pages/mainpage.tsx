@@ -1,14 +1,19 @@
-
-import { useEffect, useState } from 'react'
-import { io } from 'socket.io-client'
-const socket = io('localhost:4000')
-
 type MainPageProps = {
-    handleCreateLobby: () => void;
-    handleJoinLobby: () => void;
+    socket: any;
+    lobbyCode: string;
     setLobbyCode: React.Dispatch<React.SetStateAction<string>>;
 }
-export default function Home({ handleCreateLobby, handleJoinLobby, setLobbyCode }: MainPageProps) {
+export default function Home({ socket, lobbyCode, setLobbyCode }: MainPageProps) {
+
+    const handleCreateLobby = () => {
+        socket.emit('createLobby');
+      };
+    
+      const handleJoinLobby = () => {
+        socket.emit('joinLobby', lobbyCode);
+      };
+
+
     return (
         
         <>
