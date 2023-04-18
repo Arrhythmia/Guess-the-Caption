@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
+import dynamic from 'next/dynamic';
 
-const socket = io('https://guess-the-caption-server.glitch.me');
+const Game = dynamic(() => import('./game'));
+
+
+const MainPage = dynamic(() => import('./mainpage'))
+
+const socket = io('localhost:4000');
 
 export default function Home() {
   const [lobbyCode, setLobbyCode] = useState<string>('');
@@ -14,7 +20,6 @@ export default function Home() {
   };
 
   const handleJoinLobby = () => {
-    setIsInLobby(true);
     socket.emit('joinLobby', lobbyCode);
   };
 
@@ -31,7 +36,9 @@ export default function Home() {
       setIsInLobby(true);
       setLobbyCode(code);
     });
-
+    socket.on('joinedLobby', () => {
+      setIsInLobby(true);
+    });
     socket.on('invalidLobby', () => {
       setIsInLobby(false);
       alert('Invalid lobby code');
@@ -84,6 +91,7 @@ export default function Home() {
     <div>
       {isInLobby ? (
         <>
+          <Game></Game>
           <h1>Lobby {lobbyCode}</h1>
           <ul>
             {messages.map((data, i) => (
@@ -98,25 +106,17 @@ export default function Home() {
               </li>
             ))}
           </ul>
-          <input value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { handleSendMessage() }}} />
+          <input 
+          value={inputValue} 
+          onChange={(e) => setInputValue(e.target.value)} 
+          onKeyDown={(e) => { if (e.key === 'Enter') { handleSendMessage() }}} 
+          />
           <button onClick={handleSendMessage}>Send</button>
         </>
       ) : (
-        <>
-          <h1>Create or Join a Lobby</h1>
-          <button onClick={handleCreateLobby}>Create Lobby</button>
-          <div>
-            <label htmlFor="lobbyCode">Lobby Code:</label>
-            <input
-              type="text"
-              id="tempLobbyCode"
-              value={lobbyCode}
-              onChange={(e) => setLobbyCode(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') { handleJoinLobby() }}}
-            />
-            <button onClick={handleJoinLobby}>Join Lobby</button>
-          </div>
-        </>
+        <MainPage handleCreateLobby={handleCreateLobby}
+        handleJoinLobby={handleJoinLobby}
+        setLobbyCode={setLobbyCode}></MainPage>
       )}
     </div>
   );
