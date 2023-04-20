@@ -2,40 +2,50 @@ type ChatProps = {
     socket: any
     lobbyCode: string
 }
+
+interface Player{
+  clientId: string;
+  playerName: string;
+}
+
+import { myself } from './localPlayer';
 import { useEffect, useState } from 'react';
 export default function Home({ socket, lobbyCode }: ChatProps) {
     const [messages, setMessages] = useState<{ sender: string; message: string }[]>([]);
     const [inputValue, setInputValue] = useState<string>('');
 
     const handleSendMessage = () => {
-        socket.emit('sendMessage', { sender: socket.id, message: inputValue, lobbyCode });
+        socket.emit('sendMessage', { sender: myself, message: inputValue, lobbyCode });
         setInputValue('');
       };
 
 
       useEffect(() => {
 
-        socket.on('newUser', (userId: string) => {
-            console.log("SOMEONE JOINED!")
+        socket.on('newUser', (player: Player) => {
             setMessages((prevMessages) => [
               ...prevMessages,
               {
                 sender: 'system',
-                message: `${userId} has joined the lobby`,
+                message: `${player.playerName} has joined the lobby`,
               },
             ]);
           });
       
-          socket.on('newMessage', (data: { sender: string; message: string }) => {
-            setMessages((prevMessages) => [...prevMessages, data]);
+          socket.on('newMessage', (data: {player:Player, message:string}) => {
+            console.log(data)
+            const senderName = data.player.playerName;
+            const message = data.message
+            const data2 = {sender: senderName, message: message}
+            setMessages((prevMessages) => [...prevMessages, data2]);
           });
       
-          socket.on('userLeft', (userId: string) => {
+          socket.on('userLeft', (user: Player) => {
             setMessages((prevMessages) => [
               ...prevMessages,
               {
                 sender: 'system',
-                message: `${userId} has left the lobby`,
+                message: `${user.playerName} has left the lobby`,
               },
             ]);
           });

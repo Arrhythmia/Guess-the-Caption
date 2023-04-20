@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import dynamic from 'next/dynamic';
+import { setClientId } from './localPlayer';
 
 const Game = dynamic(() => import('./game'));
 
@@ -13,10 +14,12 @@ const socket = io(process.env.NODE_ENV === 'production' ? 'guess-the-caption-ser
 export default function Home() {
   const [lobbyCode, setLobbyCode] = useState<string>('');
   const [isInLobby, setIsInLobby] = useState<boolean>();
+  const [username, setUsername] = useState<string>('');
 
   
 
   socket.connect();
+  setClientId(socket.id);
   useEffect(() => {
 
     socket.on('lobbyCreated', (code: string) => {
@@ -53,7 +56,9 @@ export default function Home() {
       ) : (
         <MainPage socket={socket}
         lobbyCode={lobbyCode}
-        setLobbyCode={setLobbyCode}></MainPage>
+        setLobbyCode={setLobbyCode}
+        username={username}
+        setUsername={setUsername}></MainPage>
       )}
     </div>
   );

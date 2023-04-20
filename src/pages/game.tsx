@@ -13,6 +13,10 @@ export default function Home({ socket, lobbyCode }: GameProps){
         socket.emit('requestImage', lobbyCode);
     }
 
+    function handleStartGame(){
+        socket.emit('startGame', lobbyCode);
+    }
+
     useEffect(() => {
         socket.on('newImage', (data: { title: string; url: string }) => {
             setImageData(data);
@@ -23,6 +27,7 @@ export default function Home({ socket, lobbyCode }: GameProps){
     return(
         <div>
             <button onClick={handleRequestImage}>Image</button>
+            <button onClick={handleStartGame}>Start</button>
             {imageData ? (
             <>
             <h1>{imageData.title}</h1>
