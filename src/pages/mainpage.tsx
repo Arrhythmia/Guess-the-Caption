@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { setPlayerName, myself } from '../localPlayer';
+import { setPlayerName, myself } from './api/localPlayer';
 
 type MainPageProps = {
   socket: any;
