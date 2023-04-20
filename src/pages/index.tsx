@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import dynamic from 'next/dynamic';
-import { setClientId } from './localPlayer';
+import { setClientId } from '../localPlayer';
 
 const Game = dynamic(() => import('./game'));
 

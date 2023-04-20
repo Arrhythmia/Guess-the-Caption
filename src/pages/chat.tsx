@@ -8,7 +8,7 @@ interface Player{
   playerName: string;
 }
 
-import { myself } from './localPlayer';
+import { myself } from '../localPlayer';
 import { useEffect, useState } from 'react';
 export default function Home({ socket, lobbyCode }: ChatProps) {
     const [messages, setMessages] = useState<{ sender: string; message: string }[]>([]);
