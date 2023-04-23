@@ -33,11 +33,16 @@ export default function Home() {
       setIsInLobby(false);
       alert('Invalid lobby code');
     });
+    socket.on('invalidName', () => {
+      setIsInLobby(false);
+      alert('Invalid name');
+    });
 
     return () => {
       socket.off('lobbyCreated')
       socket.off('joinedLobby')
       socket.off('invalidLobby')
+      socket.off('invalidName')
     };
   }, []);
 
