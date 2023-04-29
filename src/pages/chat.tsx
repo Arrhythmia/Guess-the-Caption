@@ -3,12 +3,9 @@ type ChatProps = {
     lobbyCode: string
 }
 
-interface Player{
-  clientId: string;
-  playerName: string;
-}
 
-import { myself } from './api/localPlayer';
+
+import { myself, Player } from './api/localPlayer';
 import { useEffect, useState } from 'react';
 export default function Home({ socket, lobbyCode }: ChatProps) {
     const [messages, setMessages] = useState<{ sender: string; message: string }[]>([]);
@@ -33,7 +30,6 @@ export default function Home({ socket, lobbyCode }: ChatProps) {
           });
       
           socket.on('newMessage', (data: {player:Player, message:string}) => {
-            console.log(data)
             const senderName = data.player.playerName;
             const message = data.message
             const data2 = {sender: senderName, message: message}

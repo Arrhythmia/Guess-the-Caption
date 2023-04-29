@@ -14,7 +14,7 @@ const socket = io(process.env.NODE_ENV === 'production' ? 'guess-the-caption-ser
 export default function Home() {
   const [lobbyCode, setLobbyCode] = useState<string>('');
   const [isInLobby, setIsInLobby] = useState<boolean>();
-  const [username, setUsername] = useState<string>('');
+  const [username, setUsername] = useState<string>('sbeve');
 
   
 

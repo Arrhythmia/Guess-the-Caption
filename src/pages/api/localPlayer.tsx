@@ -1,4 +1,7 @@
-
+export interface Player{
+    clientId: string;
+    playerName: string;
+}
 export let myself = {clientId: '', playerName: ''};
 
 export function setClientId(id: string){
