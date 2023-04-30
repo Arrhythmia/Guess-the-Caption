@@ -18,12 +18,10 @@ export default function Home({ socket, lobbyCode, setLobbyCode, username, setUse
 
   const handleJoinLobby = () => {
     setPlayerName(username);
+    setClientId(socket.id);
     socket.emit('joinLobby', { lobbyCode, player:myself });
   };
 
-  useEffect(() => {
-    setPlayerName(username);
-  }, [username]);
 
   return (
 

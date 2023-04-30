@@ -27,7 +27,7 @@ export default function Home({ socket, lobbyCode }: GameProps) {
 
     function handleSubmitEntry() {
         socket.emit('submitEntry', { player: myself, entry })
-        console.log('here')
+        setEntry('');
     } 
 
     function handleKeyDown() {
@@ -84,6 +84,7 @@ export default function Home({ socket, lobbyCode }: GameProps) {
                     <img src={imageData.url}></img>
                     <input
                         type="text"
+                        value={entry}
                         onChange={(e) => setEntry(e.target.value)}
                         onKeyDown={(e) => { if (e.key === 'Enter') { handleKeyDown() } }}
                         onKeyUp={(e) => { if (e.key === 'Enter') { handleKeyUp() } }}
