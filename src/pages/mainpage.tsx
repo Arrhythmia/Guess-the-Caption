@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { setPlayerName, myself } from './api/localPlayer';
+import { setClientId, setPlayerName, myself } from './api/localPlayer';
 
 type MainPageProps = {
   socket: any;
@@ -12,6 +12,7 @@ export default function Home({ socket, lobbyCode, setLobbyCode, username, setUse
 
   const handleCreateLobby = () => {
     setPlayerName(username);
+    setClientId(socket.id);
     socket.emit('createLobby', (myself));
   };
 

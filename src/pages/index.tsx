@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import dynamic from 'next/dynamic';
-import { setClientId } from './api/localPlayer';
+import { myself, setClientId } from './api/localPlayer';
 
 const Game = dynamic(() => import('./game'));
 
@@ -9,19 +9,17 @@ const Game = dynamic(() => import('./game'));
 const MainPage = dynamic(() => import('./mainpage'))
 const Chat = dynamic(() => import('./chat'))
 
-const socket = io(process.env.NODE_ENV === 'production' ? 'guess-the-caption-server.glitch.me' : 'localhost:4000');
 
 export default function Home() {
   const [lobbyCode, setLobbyCode] = useState<string>('');
   const [isInLobby, setIsInLobby] = useState<boolean>();
   const [username, setUsername] = useState<string>('sbeve');
 
-  
+  let socket = io(process.env.NODE_ENV === 'production' ? 'guess-the-caption-server.glitch.me' : 'localhost:4000');
 
-  socket.connect();
-  setClientId(socket.id);
   useEffect(() => {
-
+    socket.connect();
+    
     socket.on('lobbyCreated', (code: string) => {
       setIsInLobby(true);
       setLobbyCode(code);
@@ -43,6 +41,7 @@ export default function Home() {
       socket.off('joinedLobby')
       socket.off('invalidLobby')
       socket.off('invalidName')
+      socket.disconnect()
     };
   }, []);
 
