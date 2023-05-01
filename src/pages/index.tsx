@@ -1,80 +1,56 @@
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
+import dynamic from 'next/dynamic';
+import { myself, setClientId } from './api/localPlayer';
 
-const socket = io('https://guess-the-caption-server.glitch.me');
+const Game = dynamic(() => import('./game'));
+
+
+const MainPage = dynamic(() => import('./mainpage'))
+const Chat = dynamic(() => import('./chat'))
+
+const socket = io(process.env.NODE_ENV === 'production' ? 'guess-the-caption-server.glitch.me' : 'localhost:4000');
 
 export default function Home() {
   const [lobbyCode, setLobbyCode] = useState<string>('');
   const [isInLobby, setIsInLobby] = useState<boolean>();
-  const [messages, setMessages] = useState<{ sender: string; message: string }[]>([]);
-  const [inputValue, setInputValue] = useState<string>('');
+  const [username, setUsername] = useState<string>('sbeve');
 
-  const handleCreateLobby = () => {
-    socket.emit('createLobby');
+  const connectSocket = async () => {
+    await new Promise<void>((resolve) => {
+      socket.connect();
+      while (myself.clientId === '') {
+        setClientId(socket.id)
+      }
+      resolve();
+    });
   };
-
-  const handleJoinLobby = () => {
-    setIsInLobby(true);
-    socket.emit('joinLobby', lobbyCode);
-  };
+  connectSocket();
 
 
-  const handleSendMessage = () => {
-    socket.emit('sendMessage', { sender: socket.id, message: inputValue, lobbyCode });
-    setInputValue('');
-  };
 
   useEffect(() => {
-    socket.connect();
-
     socket.on('lobbyCreated', (code: string) => {
       setIsInLobby(true);
       setLobbyCode(code);
     });
-
+    socket.on('joinedLobby', () => {
+      setIsInLobby(true);
+    });
     socket.on('invalidLobby', () => {
       setIsInLobby(false);
       alert('Invalid lobby code');
     });
-
-    socket.on('newUser', (userId: string) => {
-      console.log("SOMEONE JOINED!")
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          sender: 'system',
-          message: `${userId} has joined the lobby`,
-        },
-      ]);
+    socket.on('invalidName', () => {
+      setIsInLobby(false);
+      alert('Invalid name');
     });
-
-    socket.on('newMessage', (data: { sender: string; message: string }) => {
-      setMessages((prevMessages) => [...prevMessages, data]);
-    });
-
-    socket.on('userLeft', (userId: string) => {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          sender: 'system',
-          message: `${userId} has left the lobby`,
-        },
-      ]);
-    });
-
-
-    
-
-
 
     return () => {
       socket.off('lobbyCreated')
+      socket.off('joinedLobby')
       socket.off('invalidLobby')
-      socket.off('newUser')
-      socket.off('newMessage')
-      socket.off('userLeft')
-      
-      socket.disconnect();
+      socket.off('invalidName')
     };
   }, []);
 
@@ -85,38 +61,17 @@ export default function Home() {
       {isInLobby ? (
         <>
           <h1>Lobby {lobbyCode}</h1>
-          <ul>
-            {messages.map((data, i) => (
-              <li key={i}>
-                {data.sender === 'system' ? (
-                  <i>{data.message}</i>
-                ) : (
-                  <>
-                    {data.sender}: {data.message}
-                  </>
-                )}
-              </li>
-            ))}
-          </ul>
-          <input value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { handleSendMessage() }}} />
-          <button onClick={handleSendMessage}>Send</button>
+
+          <Chat socket={socket} lobbyCode={lobbyCode}></Chat>
+
+          <Game socket={socket} lobbyCode={lobbyCode}></Game>
         </>
       ) : (
-        <>
-          <h1>Create or Join a Lobby</h1>
-          <button onClick={handleCreateLobby}>Create Lobby</button>
-          <div>
-            <label htmlFor="lobbyCode">Lobby Code:</label>
-            <input
-              type="text"
-              id="tempLobbyCode"
-              value={lobbyCode}
-              onChange={(e) => setLobbyCode(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') { handleJoinLobby() }}}
-            />
-            <button onClick={handleJoinLobby}>Join Lobby</button>
-          </div>
-        </>
+        <MainPage socket={socket}
+          lobbyCode={lobbyCode}
+          setLobbyCode={setLobbyCode}
+          username={username}
+          setUsername={setUsername}></MainPage>
       )}
     </div>
   );
