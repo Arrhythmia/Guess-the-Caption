@@ -1,0 +1,104 @@
+.background {
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    position: fixed;
+    background-image: url(../../public/images/background.png);
+    background-size: cover;
+    z-index: -2;
+}
+
+.mainPageBox {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: url(../../public/images/box.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    height: 65vh;
+    width: 65vw;
+    border: 3px solid white;
+    border-radius: 50px;
+}
+
+.logo {
+    top: 10%;
+    left: 7.5%;
+    position: fixed;
+    background-image: url(../../public/images/logo_smallbg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    background-size: 25%;
+}
+
+
+.createLobbyButtonContainer,
+.joinLobbyButtonContainer {
+    position: relative;
+    border: none;
+    background-image: url(../../public/images/inputBox.png);
+    background-repeat: round;
+    height: 7vh;
+    width: 10vw;
+    /* min-width: 80px;
+    min-height: 50px; */
+    top: 58%;
+    left: 73%;
+}
+
+.createLobbyButtonContainer button,
+.joinLobbyButtonContainer button {
+    display: flex;
+    position: relative;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: black;
+    width: 90%;
+    height: 78%;
+    overflow:hidden;
+    font-size: 2.2vmin;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.usernameContainer {
+    position: fixed;
+    display: flex;
+    padding: 0.5vmin;
+    border-radius: 0.5vmin;
+    flex-direction: column;
+    align-items: center;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.lobbyCodeContainer {
+    position: fixed;
+    display: flex;
+    padding: 0.5vmin;
+    border-radius: 0.5vmin;
+    flex-direction: column;
+    align-items: center;
+    left: 63%;
+    top: 80%;
+}
+
+.usernameContainer input,
+.lobbyCodeContainer input {
+    scale: 50%;
+}
+
+::placeholder{
+    opacity: 0.3;
+}
+
+* {
+    font-family: Black;
+}

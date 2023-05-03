@@ -19,32 +19,38 @@ export default function Home({ socket, lobbyCode, setLobbyCode, username, setUse
   const handleJoinLobby = () => {
     setPlayerName(username);
     setClientId(socket.id);
-    socket.emit('joinLobby', { lobbyCode, player:myself });
+    socket.emit('joinLobby', { lobbyCode, player: myself });
   };
 
 
   return (
 
     <>
-
-      <label>Name:</label>
-      <input
-        type="text"
-        onChange={(e) => setUsername(e.target.value)}
-        onKeyDown={(e) => { if (e.key === 'Enter') { handleJoinLobby() } }}
-      />
-      
-      <h1>Create or Join a Lobby</h1>
-      <button onClick={handleCreateLobby}>Create Lobby</button>
-      <div>
-        <label>Lobby Code:</label>
-        <input
-          type="text"
-          onChange={(e) => setLobbyCode(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') { handleJoinLobby() } }}
-        />
-        <button onClick={handleJoinLobby}>Join Lobby</button>
-
+      <div className="background">
+        <div className="mainPageBox">
+          <div className="usernameContainer">
+            <label>Name:</label>
+            <input
+              type="text"
+              onChange={(e) => setUsername(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') { handleJoinLobby() } }}
+            />
+          </div>
+          <div className="logo"></div>
+          <div className="createLobbyButtonContainer">
+            <button onClick={handleCreateLobby}>Create Lobby</button>
+          </div>
+          <div className="joinLobbyButtonContainer">
+            <button onClick={handleCreateLobby}>Join Lobby</button>
+          </div>
+          <div className="lobbyCodeContainer">
+            <input
+              type="text"
+              onChange={(e) => setLobbyCode(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') { handleJoinLobby() } }}
+            />
+          </div>
+        </div>
       </div>
     </>
   );
