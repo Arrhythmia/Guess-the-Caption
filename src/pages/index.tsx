@@ -57,22 +57,25 @@ export default function Home() {
 
 
   return (
-    <div>
-      {isInLobby ? (
-        <>
-          <h1>Lobby {lobbyCode}</h1>
 
-          <Chat socket={socket} lobbyCode={lobbyCode}></Chat>
+    <div className="background">
+      <div>
+        {isInLobby ? (
+          <>
+            <h1>Lobby {lobbyCode}</h1>
 
-          <Game socket={socket} lobbyCode={lobbyCode}></Game>
-        </>
-      ) : (
-        <MainPage socket={socket}
-          lobbyCode={lobbyCode}
-          setLobbyCode={setLobbyCode}
-          username={username}
-          setUsername={setUsername}></MainPage>
-      )}
+            <Chat socket={socket} lobbyCode={lobbyCode}></Chat>
+
+            <Game socket={socket} lobbyCode={lobbyCode}></Game>
+          </>
+        ) : (
+          <MainPage socket={socket}
+            lobbyCode={lobbyCode}
+            setLobbyCode={setLobbyCode}
+            username={username}
+            setUsername={setUsername}></MainPage>
+        )}
+      </div>
     </div>
   );
 }

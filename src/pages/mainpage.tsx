@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { setClientId, setPlayerName, myself } from './api/localPlayer';
+import { useRef } from 'react';
 
 type MainPageProps = {
   socket: any;
@@ -22,32 +23,41 @@ export default function Home({ socket, lobbyCode, setLobbyCode, username, setUse
     socket.emit('joinLobby', { lobbyCode, player: myself });
   };
 
+  const lobbyCodeTextBox = useRef<HTMLInputElement>(null);
+  const handleHoverOVerJoin = () => {
+    lobbyCodeTextBox.current?.focus();
+  }
 
   return (
 
     <>
-      <div className="background">
-        <div className="mainPageBox">
-          <div className="usernameContainer">
-            <label>Name:</label>
-            <input
-              type="text"
-              onChange={(e) => setUsername(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') { handleJoinLobby() } }}
-            />
-          </div>
-          <div className="logo"></div>
+      <div className="mainPageBox">
+        <div className="usernameContainer">
+          <label>Name:</label>
+          <input
+            type="text"
+            onChange={(e) => setUsername(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') { handleJoinLobby() } }}
+          />
+        </div>
+        <div className="logo"></div>
+        <div className="buttonsContainer">
           <div className="createLobbyButtonContainer">
             <button onClick={handleCreateLobby}>Create Lobby</button>
           </div>
-          <div className="joinLobbyButtonContainer">
-            <button onClick={handleCreateLobby}>Join Lobby</button>
-          </div>
-          <div className="lobbyCodeContainer">
+          <div className="joinLobbyContainer">
+            <div className="joinLobbyButtonContainer">
+              <button onClick={handleJoinLobby} onMouseOver={handleHoverOVerJoin} className="joinLobbyButton">Join Lobby</button>
+
+            </div>
             <input
               type="text"
               onChange={(e) => setLobbyCode(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') { handleJoinLobby() } }}
+              placeholder="Lobby"
+              className="lobbyCode"
+              ref={lobbyCodeTextBox}
+              maxLength={6}
             />
           </div>
         </div>
