@@ -6,10 +6,10 @@
     left: 83%;
     display: flex;
     flex-direction: column;
-    background-color: rgb(225, 183, 0);
-    overflow-y: auto;
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
+    background-color: rgb(89, 182, 49);
+    overflow-y: hidden;
+    justify-content: space-between;
+    overflow-x: hidden;
 }
 
 .chatContainer {
@@ -17,17 +17,16 @@
     background-color: rgba(0, 0, 0, 0.29);
     width: 95%;
     left: 2.5%;
-    height: 93.7%;
     display: flex;
     flex-direction: column-reverse;
     justify-content: flex-end;
     border-bottom: none;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
     overflow-y: auto;
+
+    height: 95.8%;
 }
 
-.chatContainer > div {
+.chatContainer>div {
     display: flex;
     flex-direction: column;
 }
@@ -42,14 +41,32 @@
     margin-bottom: 3px;
 }
 
+.inputContainer {
+    position: relative;
+    display: flex;
+    left: 2%;
+}
+
+.chatInput {
+    position: relative;
+    width: 95%;
+    left: 0.5%;
+    outline: none;
+    border: rgba(0, 0, 0, 0.24) 2px solid;
+    border-radius: 4px;
+    height: 135%;
+    bottom: 42%;
+    background-color: rgba(0, 0, 0, 0.473);
+    text-indent: 4%;
 
 
-/* width */
+}
+
 ::-webkit-scrollbar {
     width: 6px;
-  }
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: rgba(41, 41, 41, 0.218);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(41, 41, 41, 0.445);
     border-radius: 10px;
-  }
+}

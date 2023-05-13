@@ -17,7 +17,6 @@ export default function Home({ socket, lobbyCode }: ChatProps) {
   const handleSendMessage = () => {
     socket.emit('sendMessage', { sender: myself, message: inputValue, lobbyCode });
     setInputValue('');
-    scrollToBottom();
   };
 
 
@@ -31,7 +30,6 @@ export default function Home({ socket, lobbyCode }: ChatProps) {
           message: `${player.playerName} has joined the lobby`,
         },
       ]);
-      scrollToBottom();
     });
 
     socket.on('newMessage', (data: { player: Player, message: string }) => {
@@ -40,7 +38,6 @@ export default function Home({ socket, lobbyCode }: ChatProps) {
       const data2 = { sender: senderName, message: message }
       setMessages((prevMessages) => [...prevMessages, data2]);
 
-      scrollToBottom();
     });
 
     socket.on('userLeft', (user: Player) => {
@@ -51,9 +48,7 @@ export default function Home({ socket, lobbyCode }: ChatProps) {
           message: `${user.playerName} has left the lobby`,
         },
       ]);
-      scrollToBottom();
     });
-
     return () => {
       socket.off('newUser')
       socket.off('newMessage')
@@ -61,14 +56,6 @@ export default function Home({ socket, lobbyCode }: ChatProps) {
     };
   }, []);
 
-  const chatContainer = document.querySelector<HTMLDivElement>('.chatContainer');
-
-  function scrollToBottom() {
-    if (chatContainer) {
-      console.log(chatContainer.scrollHeight)
-      chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-  }
 
   return (
 
@@ -88,12 +75,15 @@ export default function Home({ socket, lobbyCode }: ChatProps) {
           ))}
 
         </ScrollToBottom>
-        <input
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') { handleSendMessage() } }}
-        />
-        <button onClick={handleSendMessage}>Send</button>
+        <div className="inputContainer">
+          <input
+            className="chatInput"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') { handleSendMessage() } }}
+          />
+          {/* <button onClick={handleSendMessage}>Send</button> */}
+        </div>
       </div>
     </>
   );
