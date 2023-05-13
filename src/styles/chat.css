@@ -1,0 +1,55 @@
+.rightSideBar {
+    position: fixed;
+    height: 100%;
+    width: 17%;
+    top: 0%;
+    left: 83%;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(225, 183, 0);
+    overflow-y: auto;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+.chatContainer {
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.29);
+    width: 95%;
+    left: 2.5%;
+    height: 93.7%;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    border-bottom: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    overflow-y: auto;
+}
+
+.chatContainer > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.messageContainer:first-child {
+    margin-top: auto;
+}
+
+.messageContainer {
+    list-style-type: none;
+    margin-left: 3px;
+    margin-bottom: 3px;
+}
+
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 6px;
+  }
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgba(41, 41, 41, 0.218);
+    border-radius: 10px;
+  }

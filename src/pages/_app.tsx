@@ -1,6 +1,7 @@
 import '@/styles/globals.css'
 
 import '@/styles/mainpage.css'
+import '@/styles/chat.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 

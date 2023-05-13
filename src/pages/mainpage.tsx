@@ -32,15 +32,14 @@ export default function Home({ socket, lobbyCode, setLobbyCode, username, setUse
 
     <>
       <div className="mainPageBox">
-        <div className="usernameContainer">
-          <label>Name:</label>
+        <div className="logo"></div>
           <input
+            className="usernameBox"
+            placeholder="Username"
             type="text"
             onChange={(e) => setUsername(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter') { handleJoinLobby() } }}
           />
-        </div>
-        <div className="logo"></div>
         <div className="buttonsContainer">
           <div className="createLobbyButtonContainer">
             <button onClick={handleCreateLobby}>Create Lobby</button>
@@ -55,7 +54,7 @@ export default function Home({ socket, lobbyCode, setLobbyCode, username, setUse
               onChange={(e) => setLobbyCode(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') { handleJoinLobby() } }}
               placeholder="Lobby"
-              className="lobbyCode"
+              className="lobbyCodeBox"
               ref={lobbyCodeTextBox}
               maxLength={6}
             />

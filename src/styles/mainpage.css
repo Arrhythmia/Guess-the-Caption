@@ -85,7 +85,7 @@
     flex-direction: row;
 }
 
-.lobbyCode {
+.lobbyCodeBox {
     width: 9vw;
     height: 75%;
     top: 3%;
@@ -104,40 +104,44 @@
     transition: right 0.3s
 }
 
-.joinLobbyButtonContainer:hover + .lobbyCode {
+.joinLobbyButtonContainer:hover + .lobbyCodeBox {
     right: 170%;
     transition: right 0.3s;
 }
 
-.lobbyCode:hover {
+.lobbyCodeBox:hover {
     right: 170%;
 }
 
-.lobbyCode:active {
+.lobbyCodeBox:active {
     outline: none;
 }
 
-.usernameContainer {
+
+.usernameBox {
+    width: 14%;
+    height: 9%;
     position: fixed;
-    display: flex;
-    padding: 0.5vmin;
-    border-radius: 0.5vmin;
-    flex-direction: column;
-    align-items: center;
-    left: 50%;
-    transform: translate(-50%);
+    /* background-color: rgba(0, 0, 0, 0.4); */
+    background-color: white;
+    /* border: 2px solid rgba(184, 184, 184, 0.7); */
+    border: solid 1px black;
+    border-radius: 5px;
+    color: white;
+    text-indent: 5%;
+    font-size: 2.2vmin;
+    top: 78%;
+    left: 2%;
+    background-color: rgba(255, 255, 255, 0.911);
+    color: black;
 }
 
-
-.usernameContainer input,
-.lobbyCodeContainer input {
-    /* scale: 50%; */
-    width: 47%;
-    font-size: 70%;
+.usernameBox:focus-visible {
+    outline: none;
 }
 
 ::placeholder{
-    opacity: 0.3;
+    opacity: 0.5;
 }
 
 * {
